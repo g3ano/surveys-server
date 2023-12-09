@@ -1,3 +1,3 @@
-# Create, edit and share Surveys now, with our website
+# Create, edit and share Surveys
 
-This was created using laravel as a backend, and react.js for the frontend.
+This created using laravel as a backend, and react.js for frontend
