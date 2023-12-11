@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -29,11 +30,31 @@ class AuthController extends Controller
 
     public function Login(LoginRequest $request)
     {
-        return 'login';
+        $data = $request->validated();
+        if (!Auth::attempt($data)) {
+            return response()->json([
+                'errors' => [
+                    'password' => "password is incorrect, try again"
+                ],
+            ], 422);
+        }
+
+        /** @var User $user */
+        $user = Auth::user();
+        $token = $user->createToken('access')->plainTextToken;
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
     }
 
     public function Logout()
     {
-        return 'logout';
+        /** @var User $user */
+        $user = Auth::user();
+        $user->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'logout successfully',
+        ]);
     }
 }
