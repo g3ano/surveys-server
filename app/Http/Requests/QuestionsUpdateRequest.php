@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class SurveyUpdateRequest extends FormRequest
+class QuestionsUpdateRequest extends FormRequest
 {
+    protected $types = ['text', 'select', 'checkbox', 'radio'];
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -22,12 +25,11 @@ class SurveyUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:1000'],
-            'image' => ['nullable', 'string'],
-            'status' => ['required', 'boolean'],
-            'description' => ['nullable', 'string'],
-            'expire_date' => ['nullable', 'date', 'after:today'],
-            'questions' => ['nullable', 'array'],
+            '*.survey_id' => [Rule::exists('surveys', 'id')],
+            '*.type' => ['bail','required', Rule::in($this->types)],
+            '*.question' => ['bail','required', 'string', 'max:255'],
+            '*.description' => ['bail','nullable', 'string', 'max:1000'],
+            '*.data' => ['bail','nullable'],
         ];
     }
 }

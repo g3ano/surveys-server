@@ -18,8 +18,8 @@ class SurveyStoreRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'user_id' => $this->user()->id,
-        ]);
+             'user_id' => $this->user()->id,
+         ]);
     }
 
     /**
@@ -31,11 +31,11 @@ class SurveyStoreRequest extends FormRequest
     {
         return [
             'user_id' => [Rule::exists('users', 'id')],
-            'title' => ['required', 'string', 'max:1000'],
+            'title' => ['required', 'string', 'max:1000', Rule::unique('surveys')->where('user_id', $this->user()->id)],
             'image' => ['nullable', 'string'],
             'status' => ['required', 'boolean'],
             'description' => ['nullable', 'string'],
-            'expire_date' => ['nullable', 'date', 'after:today'],
+            'expire_date' => ['required', 'date', 'after:today'],
             'questions' => ['nullable', 'array'],
         ];
     }
