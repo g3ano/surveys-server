@@ -47,8 +47,7 @@ class SurveyController extends Controller
         $data['slug'] = Str::slug($data['title']);
 
         if (isset($data['image'])) {
-            $relativePath = $this->saveImage($data['image']);
-            $data['image'] = $relativePath;
+            $data['image'] = $this->saveImage($data['image']);
         }
 
         $survey = Survey::create($data);
@@ -65,10 +64,10 @@ class SurveyController extends Controller
 
             $validator = Validator::make($question, [
                 'survey_id' => [Rule::exists('surveys', 'id')],
-                'type' => ['bail','required', Rule::in($this->types)],
-                'question' => ['bail','required', 'string', 'max:255'],
-                'description' => ['bail','nullable', 'string', 'max:1000'],
-                'data' => ['bail','nullable'],
+                'type' => ['bail', 'required', Rule::in($this->types)],
+                'question' => ['bail', 'required', 'string', 'max:255'],
+                'description' => ['bail', 'nullable', 'string', 'max:1000'],
+                'data' => ['bail', 'nullable'],
             ]);
 
             $nQuestions[] = SurveyQuestion::create($validator->validated());
@@ -176,10 +175,10 @@ class SurveyController extends Controller
 
                 $validator = Validator::make($question, [
                     'survey_id' => [Rule::exists('surveys', 'id')],
-                    'type' => ['bail','required', Rule::in($this->types)],
-                    'question' => ['bail','required', 'string', 'max:255'],
-                    'description' => ['bail','nullable', 'string', 'max:1000'],
-                    'data' => ['bail','nullable'],
+                    'type' => ['bail', 'required', Rule::in($this->types)],
+                    'question' => ['bail', 'required', 'string', 'max:255'],
+                    'description' => ['bail', 'nullable', 'string', 'max:1000'],
+                    'data' => ['bail', 'nullable'],
                 ]);
 
                 SurveyQuestion::create($validator->validated());
@@ -189,7 +188,6 @@ class SurveyController extends Controller
         return response()->json([
             'status' => 'survey updated successfully',
         ]);
-
     }
 
     /**
@@ -295,6 +293,4 @@ class SurveyController extends Controller
 
         return $relativePath;
     }
-
-
 }

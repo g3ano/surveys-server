@@ -27,7 +27,7 @@ class DashboardController extends Controller
             'totalSurveys' => $totalSurveys,
             'totalAnswers' => $totalAnswers,
             'totalParticipants' => $totalParticipants,
-            'latestSurvey' => SurveyResource::make($latestSurvey),
+            'latestSurvey' => $latestSurvey ? new SurveyResource($latestSurvey) : null,
             'latestAnswers' => SurveyAnswerResource::collection($latestAnswers),
         ];
     }

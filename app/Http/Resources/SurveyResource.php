@@ -22,7 +22,7 @@ class SurveyResource extends JsonResource
             'slug' => $this->slug,
             'status' => $this->status,
             'image' => $this->image ? URL::to($this->image) : '',
-            'description' => $this->description ? $this->description : '',
+            'description' => $this->description ?: '',
             'create_date' => date('Y-m-d', strtotime($this->created_at)),
             'updated_date' => date('Y-m-d', strtotime($this->updated_at)),
             'expire_date' => date('Y-m-d', strtotime($this->expire_date)),

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,6 +21,8 @@ class AuthController extends Controller
         ]);
         $token = $user->createToken('access')->plainTextToken;
 
+        Auth::login($user);
+
         return response()->json([
             'user' => $user,
             'token' => $token,
@@ -34,14 +35,17 @@ class AuthController extends Controller
         if (!Auth::attempt($data)) {
             return response()->json([
                 'errors' => [
-                    'password' => "password is incorrect, try again"
+                    'password' => 'password is incorrect, try again',
                 ],
             ], 422);
         }
 
-        /** @var User $user */
+        /**
+         * @var User $user
+         */
         $user = Auth::user();
         $token = $user->createToken('access')->plainTextToken;
+
         return response()->json([
             'user' => $user,
             'token' => $token,
@@ -50,9 +54,12 @@ class AuthController extends Controller
 
     public function Logout()
     {
-        /** @var User $user */
+        /**
+         * @var User $user
+         */
         $user = Auth::user();
         $user->currentAccessToken()->delete();
+
         return response()->json([
             'message' => 'logout successfully',
         ]);
